@@ -1,10 +1,8 @@
 <script>
-	// No script needed for basic styling, but events are forwarded automatically in Svelte 5 (if using runes) or svelte 4 bubbling
-	// For Svelte 3/4 we might need event forwarding if logic is attached, but for now it's just visual.
-	// Actually, best practice to forward clicks.
+	export let disabled = false;
 </script>
 
-<button class="primary-button" on:click>
+<button class="primary-button" on:click {disabled}>
 	<span><slot /></span>
 </button>
 
@@ -29,9 +27,18 @@
 		box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2); /* Adjusted shadow for black background */
 	}
 
-	.primary-button:active {
+	.primary-button:active:not(:disabled) {
 		transform: scale(0.96);
 		background: #f0f0f0; /* Light gray on active */
+	}
+
+	.primary-button:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		background: #ccc;
+		border-color: #999;
+		color: #666;
+		box-shadow: none;
 	}
 
 	.primary-button span {

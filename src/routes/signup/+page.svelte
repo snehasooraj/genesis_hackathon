@@ -7,23 +7,24 @@
 	let role = 'tenant';
 	
 	// Separate state for each role
-	let tenantCreds = { phone: '', password: '' };
-	let ownerCreds = { phone: '', password: '' };
+	let tenantCreds = { name: '', phone: '', password: '' };
+	let ownerCreds = { name: '', phone: '', password: '' };
 	
 	onMount(() => {
-		// Get role from query parameter if available
-		const roleParam = $page.url.searchParams.get('role');
 		if (roleParam && (roleParam === 'tenant' || roleParam === 'owner')) {
 			role = roleParam;
 		}
 	});
 
+	$: isTenantValid = tenantCreds.name?.trim() && tenantCreds.phone?.trim() && tenantCreds.password?.trim();
+	$: isOwnerValid = ownerCreds.name?.trim() && ownerCreds.phone?.trim() && ownerCreds.password?.trim();
+
 	function handleSubmit() {
 		if (role === 'tenant') {
-			console.log('Login as tenant:', tenantCreds);
+			console.log('Signup as tenant:', tenantCreds);
 			goto('/buyer/home');
 		} else {
-			console.log('Login as owner:', ownerCreds);
+			console.log('Signup as owner:', ownerCreds);
 			goto('/seller/dashboard');
 		}
 	}
@@ -32,7 +33,7 @@
 <div class="login-container">
 	<div class="card">
 		<h1 class="brand">Laddu</h1>
-		<p class="subtitle">Welcome back! Please login to continue.</p>
+		<p class="subtitle">Create your account to get started.</p>
 
 		<div class="role-selector">
 			<button 
@@ -52,7 +53,18 @@
 		{#if role === 'tenant'}
 			<form on:submit|preventDefault={handleSubmit}>
 				<div class="form-group">
-					<label for="tenant-phone">Phone Number</label>
+					<label for="tenant-name">Full Name <span class="required">*</span></label>
+					<input 
+						type="text" 
+						id="tenant-name" 
+						placeholder="Enter your full name" 
+						bind:value={tenantCreds.name} 
+						required 
+					/>
+				</div>
+
+				<div class="form-group">
+					<label for="tenant-phone">Phone Number <span class="required">*</span></label>
 					<input 
 						type="tel" 
 						id="tenant-phone" 
@@ -63,24 +75,35 @@
 				</div>
 
 				<div class="form-group">
-					<label for="tenant-password">Password</label>
+					<label for="tenant-password">Password <span class="required">*</span></label>
 					<input 
 						type="password" 
 						id="tenant-password" 
-						placeholder="Enter tenant password" 
+						placeholder="Create a password" 
 						bind:value={tenantCreds.password} 
 						required 
 					/>
 				</div>
 
 				<div class="actions">
-					<Button>Login as Tenant</Button>
+					<Button disabled={!isTenantValid}>Sign Up as Tenant</Button>
 				</div>
 			</form>
 		{:else}
 			<form on:submit|preventDefault={handleSubmit}>
 				<div class="form-group">
-					<label for="owner-phone">Phone Number</label>
+					<label for="owner-name">Full Name <span class="required">*</span></label>
+					<input 
+						type="text" 
+						id="owner-name" 
+						placeholder="Enter your full name" 
+						bind:value={ownerCreds.name} 
+						required 
+					/>
+				</div>
+
+				<div class="form-group">
+					<label for="owner-phone">Phone Number <span class="required">*</span></label>
 					<input 
 						type="tel" 
 						id="owner-phone" 
@@ -91,24 +114,24 @@
 				</div>
 
 				<div class="form-group">
-					<label for="owner-password">Password</label>
+					<label for="owner-password">Password <span class="required">*</span></label>
 					<input 
 						type="password" 
 						id="owner-password" 
-						placeholder="Enter owner password" 
+						placeholder="Create a password" 
 						bind:value={ownerCreds.password} 
 						required 
 					/>
 				</div>
 
 				<div class="actions">
-					<Button>Login as Owner</Button>
+					<Button disabled={!isOwnerValid}>Sign Up as Owner</Button>
 				</div>
 			</form>
 		{/if}
 
 		<div class="switch-auth">
-			<p>Don't have an account? <a href="/signup?role={role}" class="link">Sign up</a></p>
+			<p>Already have an account? <a href="/login" class="link">Login</a></p>
 		</div>
 	</div>
 </div>
@@ -201,7 +224,7 @@
 		font-size: 1rem;
 		outline: none;
 		transition: border-color 0.2s;
-		box-sizing: border-box; /* Important for width: 100% to work correctly */
+		box-sizing: border-box;
 	}
 
 	input:focus {
@@ -231,5 +254,10 @@
 	
 	.link:hover {
 		color: #ccc;
+	}
+
+	.required {
+		color: #ff4d4d;
+		margin-left: 2px;
 	}
 </style>

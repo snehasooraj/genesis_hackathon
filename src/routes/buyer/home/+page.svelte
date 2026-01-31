@@ -5,7 +5,7 @@
 	import { fade, fly } from 'svelte/transition';
 	
 	// Mock location
-	let location = "Hyderabad, Telangana";
+	let location = "Kottayam, Kerala";
 	
 	// Mock trending properties
 	const properties = [
@@ -13,11 +13,11 @@
 			id: 1,
 			price: "1.5 Lakhs/mo",
 			image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80",
-			title: "Modern Villa",
-			location: "Jubilee Hills",
+			title: "Riverside Villa",
+			location: "Kumarakom",
 			bhk: "4 BHK",
 			area: "3500 sqft",
-			commute: "15 min",
+			commute: "30 min",
 			rating: 4.8
 		},
 		{
@@ -25,10 +25,10 @@
 			price: "45000 /mo",
 			image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=500&q=80",
 			title: "City Apartment",
-			location: "Gachibowli",
+			location: "Kanjikuzhy",
 			bhk: "3 BHK",
 			area: "1800 sqft",
-			commute: "30 min",
+			commute: "10 min",
 			rating: 4.5
 		},
 		{
@@ -36,10 +36,10 @@
 			price: "2.5 Lakhs/mo",
 			image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/466378675.jpg?k=47439be8a91e422a1dbef4f02630d6c86f1266a815d7bd8f21b2c5ce0492bcc1&o=",
 			title: "Luxury Estate",
-			location: "Banjara Hills",
+			location: "Kalathipady",
 			bhk: "5 BHK",
 			area: "5000 sqft",
-			commute: "45 min",
+			commute: "15 min",
 			rating: 4.9
 		},
 		{
@@ -47,21 +47,21 @@
 			price: "30000 /mo",
 			image: "https://luxurystays.in/villas/AzulD/BD1.jpg",
 			title: "Cozy Condo",
-			location: "Madhapur",
+			location: "Baker Junction",
 			bhk: "2 BHK",
 			area: "1200 sqft",
-			commute: "10 min",
+			commute: "5 min",
 			rating: 4.2
 		},
 		{
 			id: 5,
 			price: "80000 /mo",
 			image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=500&q=80",
-			title: "Seaside Home",
-			location: "Hitech City",
+			title: "Garden Home",
+			location: "Nagampadam",
 			bhk: "4 BHK",
 			area: "2800 sqft",
-			commute: "60 min",
+			commute: "8 min",
 			rating: 4.7
 		},
 		{
@@ -69,10 +69,10 @@
 			price: "15000 /mo",
 			image: "https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=500&q=80",
 			title: "Studio Loft",
-			location: "Kondapur",
+			location: "Manarcasu",
 			bhk: "1 BHK",
 			area: "600 sqft",
-			commute: "5 min",
+			commute: "20 min",
 			rating: 4.0
 		}
 	];
@@ -110,14 +110,18 @@
 			image: property.image,
 			bhk: property.bhk || '3 BHK', // Fallbacks if data missing
 			area: property.area || '2000 sqft',
-			location: "Hyderabad" // Default location for now
+			location: property.location || "Kottayam, Kerala"
 		});
 		goto(`/bid?${params.toString()}`);
 	}
 
 	function handleMic() {
-		// Route to new voice results page
-		goto('/voice-results');
+		// If there is text in the search box, use it as the "voice" input
+		if (searchQuery.trim().length > 0) {
+			goto(`/voice-results?q=${encodeURIComponent(searchQuery)}`);
+		} else {
+			goto('/voice-results');
+		}
 	}
 </script>
 
@@ -140,7 +144,7 @@
 				<form on:submit|preventDefault={handleSearchSubmit}>
 					<input 
 						type="text" 
-						placeholder="Search for properties..." 
+						placeholder="Search for homes..." 
 						bind:value={searchQuery}
 					/>
 				</form>
@@ -173,7 +177,7 @@
 
 		<!-- Trending Section -->
 		<section class="trending-section">
-			<h2>Trending Properties Near You</h2>
+			<h2>Trending Homes Near You</h2>
 			
 			<div class="scroll-container">
 				{#each properties as property, i}

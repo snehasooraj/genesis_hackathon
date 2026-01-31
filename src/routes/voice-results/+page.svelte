@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
     import { goto } from '$app/navigation';
 	import { fade, fly } from 'svelte/transition';
 
@@ -43,10 +44,11 @@
 	];
 
 	onMount(() => {
+		const q = $page.url.searchParams.get('q');
 		// Simulate voice workflow
 		setTimeout(() => {
 			status = 'processing';
-			transcript = "Properties near Kottayam";
+			transcript = q || "Properties near Kottayam";
 		}, 1500);
 
 		setTimeout(() => {
@@ -106,7 +108,7 @@
 				{#each displayedProperties as property, i}
 					<DetailedPropertyCard 
 						{property} 
-						{index} 
+						index={i} 
 						on:click={() => handlePropertyClick(property)} 
 					/>
 				{/each}

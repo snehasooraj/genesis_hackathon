@@ -5,7 +5,7 @@
 	import Button from '$lib/components/Button.svelte';
 
 	// Extract params
-	$: title = $page.url.searchParams.get('title') || 'Luxury Property';
+	$: title = $page.url.searchParams.get('title') || 'Luxury Home';
 	$: price = $page.url.searchParams.get('price') || '1.0 Cr';
 	$: location = $page.url.searchParams.get('location') || 'Hyderabad';
 	$: image = $page.url.searchParams.get('image') || '';
@@ -87,8 +87,34 @@
 		</div>
 
 		<div class="details-section">
-			<h3>About Property</h3>
-			<p>Experience luxury living in this beautifully designed home. Featuring modern amenities, spacious interiors, and a prime location that offers both tranquility and connectivity.</p>
+
+			
+			<div class="more-details-grid">
+				<div class="detail-row">
+					<span class="d-label">Home Type</span>
+					<span class="d-value">Apartment</span>
+				</div>
+				<div class="detail-row">
+					<span class="d-label">Furnishing Status</span>
+					<span class="d-value">Semi-Furnished</span>
+				</div>
+				<div class="detail-row">
+					<span class="d-label">Available For</span>
+					<span class="d-value">Family / Bachelor</span>
+				</div>
+				<div class="detail-row">
+					<span class="d-label">Parking</span>
+					<span class="d-value">1 Car, 1 Bike</span>
+				</div>
+				<div class="detail-row">
+					<span class="d-label">Water Supply</span>
+					<span class="d-value">Corporation</span>
+				</div>
+				<div class="detail-row">
+					<span class="d-label">Age of Building</span>
+					<span class="d-value">3 Years</span>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -100,8 +126,9 @@
 
 <style>
 	.bid-screen {
-		min-height: 100vh;
-		min-height: 100svh;
+		height: 100vh;
+		height: 100svh;
+		overflow-y: auto; 
 		background: #000;
 		color: white;
 		display: flex;
@@ -284,5 +311,33 @@
 		background: linear-gradient(to top, #000 80%, transparent);
 		box-sizing: border-box;
 		z-index: 100;
+	}
+
+	.more-details-grid {
+		margin-top: 1.5rem;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.25rem 1rem;
+		border-top: 1px solid rgba(255,255,255,0.1);
+		padding: 1.5rem 0 2rem 0;
+	}
+
+	.detail-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+
+	.d-label {
+		font-size: 0.75rem;
+		color: rgba(255,255,255,0.5);
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+	}
+
+	.d-value {
+		font-size: 0.95rem;
+		color: rgba(255,255,255,0.9);
+		font-weight: 500;
 	}
 </style>
